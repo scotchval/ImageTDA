@@ -10,7 +10,7 @@ class WatershedMap(object):
     '''
 
 
-    def __init__(self, params):
+    def __init__(self):
         '''
         Constructor
         '''
@@ -23,14 +23,18 @@ class WatershedMap(object):
     '''
     def add_point(self, point, watershed, relative_height):
         if point in self.location_to_sheds: 
-            self.location_to_sheds[point].update({watershed, relative_height})
+            self.location_to_sheds[point].update({watershed: relative_height})
         else:
-            self.location_to_sheds[point] = {watershed, relative_height}
+            self.location_to_sheds[point] = {watershed: relative_height}
             
         if watershed in self.shed_to_location:
             self.shed_to_location[watershed].append(point)
         else:
             self.shed_to_location[watershed] = [point]
+            
+        '''print(self.location_to_sheds)
+        print(self.shed_to_location)
+        print("*********")'''
             
     def watershed_count(self):
         return len(self.shed_to_location)
@@ -58,6 +62,43 @@ class WatershedMap(object):
                     else:
                         edge_map[pair] = edge_weight
         return edge_map
+    
+    def are_identical_watersheds(self, location1, location2):
+        
+        
+        if location1 not in self.location_to_sheds or location2 not in self.location_to_sheds:
+            return False
+        
+        
+        if len(self.location_to_sheds[location1]) == 0 or len(self.location_to_sheds[location2]) ==0:
+            return False
+
+        keys1 = self.location_to_sheds[location1].keys()
+        keys2 = self.location_to_sheds[location2].keys()
+        
+        
+        #sheds1 = self.get_watershed_set(location1)
+        #sheds2 = self.get_watershed_set(location2)
+        
+        if len(keys1) != len(keys2):
+            return False
+        
+        for shed in keys1:
+            if shed not in keys2:
+                return False
+        return True
+        
+
+        
+    def get_watershed_set(self, point):
+        
+        watersheds = set()
+        
+        for ws in self.location_to_sheds[point]:
+            watersheds.update(ws[0])
+        return watersheds
+        
+        
     
 '''
 Gives all the possible pairs of elements of a list.
