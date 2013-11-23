@@ -7,5 +7,5 @@ Created on Nov 9, 2013
 import Image_Analysis
 
 if __name__ == '__main__':
-    filename = "../data/four.png"
+    filename = "../data/man.png"
     Image_Analysis.run_merge_analysis(filename)
