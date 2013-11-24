@@ -4,6 +4,8 @@ Created on Nov 21, 2013
 @author: sdv4
 '''
 
+import numpy
+
 class WatershedMap(object):
     '''
     classdocs
@@ -63,25 +65,20 @@ class WatershedMap(object):
                         edge_map[pair] = edge_weight
         return edge_map
     
-    def are_identical_watersheds(self, location1, location2):
+    def are_identical_watersheds(self, sub, super):
         
         
-        if location1 not in self.location_to_sheds or location2 not in self.location_to_sheds:
+        if sub not in self.location_to_sheds or super not in self.location_to_sheds:
             return False
         
         
-        if len(self.location_to_sheds[location1]) == 0 or len(self.location_to_sheds[location2]) ==0:
+        if len(self.location_to_sheds[sub]) == 0 or len(self.location_to_sheds[super]) ==0:
             return False
 
-        keys1 = self.location_to_sheds[location1].keys()
-        keys2 = self.location_to_sheds[location2].keys()
+        keys1 = self.location_to_sheds[sub].keys()
+        keys2 = self.location_to_sheds[super].keys()
         
         
-        #sheds1 = self.get_watershed_set(location1)
-        #sheds2 = self.get_watershed_set(location2)
-        
-        if len(keys1) != len(keys2):
-            return False
         
         for shed in keys1:
             if shed not in keys2:
@@ -97,6 +94,24 @@ class WatershedMap(object):
         for ws in self.location_to_sheds[point]:
             watersheds.update(ws[0])
         return watersheds
+        
+        
+        
+    def get_watershed_picture(self, dimX, dimY):
+        pic = numpy.ndarray(shape=(dimX, dimY,3), dtype='uint8', order='F')
+        
+        
+        for x in range(0,dimX):
+            for y in range(0,dimY):
+                if len(self.location_to_sheds[(x,y)]) > 1:
+                    pic[x][y][0] = 0
+                    pic[x][y][1] = 0
+                    pic[x][y][2] = 0
+                else:
+                    pic[x][y][0] = 255
+                    pic[x][y][1] = 255
+                    pic[x][y][2] = 255
+        return pic
         
         
     

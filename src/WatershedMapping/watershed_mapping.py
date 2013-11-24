@@ -69,6 +69,9 @@ def build_index_map(landscape):
     count = 0;
     
     while len(sorted_pixels) > 0:
+        
+        
+        
         local_min = sorted_pixels.pop(0)[0:2]
         
         while len(sorted_pixels) > 0 and local_min in watershed_map.location_to_sheds:

@@ -43,3 +43,49 @@ def write_image(array, filename):
     
     im = Image.fromarray(array)
     im.save(filename)
+    
+def get_gradient(array):
+    
+    gradient = numpy.ndarray(shape=(len(array), len(array[0])), dtype='uint', order='F')
+    
+    for x in range(0, len(array)):
+        for y in range(0, len(array[0])):
+            gradient[x][y] = gradient_at_point(x,y, array) 
+    return gradient        
+    
+def in_bounds(x, y, array):
+    
+    x_in = x >=0 and x < len(array)
+    y_in = y >=0 and y < len(array[0])
+    
+    
+    return x_in and y_in    
+
+def gradient_at_point(x, y, array):
+    
+    dx1 = x -1 
+    if not in_bounds(dx1, y, array):
+        dx1 = x
+    
+    
+    dx2 = x +1
+    if not in_bounds(dx2, y, array):
+        dx2 = x
+    
+    gradient_x = (int(array[dx1][y]) - int(array[dx2][y]))**2
+    
+    dy1 = y -1 
+    if not in_bounds(x, dy1, array):
+        dy1 = y
+    
+    
+    dy2 = y +1
+    if not in_bounds(x, dy2, array):
+        dy2 = y
+    
+    gradient_y = (int(array[x][dy1])- int(array[x][dy2]))**2
+    
+    
+    
+    return gradient_x + gradient_y
+    
