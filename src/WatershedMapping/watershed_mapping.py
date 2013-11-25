@@ -8,7 +8,7 @@ Created on Nov 9, 2013
 '''
 
 
-import WatershedMapping.WatershedMap as WatershedMap
+import src.WatershedMapping.WatershedMap as WatershedMap
 
 '''
 
@@ -90,5 +90,5 @@ def build_index_map(landscape):
             count +=1;
             map_watershed(next_point, landscape, watershed_map, frontier, visited, index, landscape[local_min[0]][local_min[1]])
         index +=1
-    print(index)
+    print("watersheds:" + str(index))
     return watershed_map

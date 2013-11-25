@@ -4,8 +4,7 @@ Created on Nov 18, 2013
 @author: Scott
 '''
 import numpy
-import utils.Utils as utils
-
+import src.utils.Utils as utils
 
 
 

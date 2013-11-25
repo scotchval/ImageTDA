@@ -33,10 +33,7 @@ class WatershedMap(object):
             self.shed_to_location[watershed].append(point)
         else:
             self.shed_to_location[watershed] = [point]
-            
-        '''print(self.location_to_sheds)
-        print(self.shed_to_location)
-        print("*********")'''
+
             
     def watershed_count(self):
         return len(self.shed_to_location)
@@ -46,13 +43,16 @@ class WatershedMap(object):
         # map of edges (pair of watersheds) to the weight of the edge
         edge_map = dict()
         
+        edges = 0
+        
         for location in self.location_to_sheds:
             # this is the condition for an edge.
             if len(self.location_to_sheds[location]) > 1:
                 pairs = get_all_possible_pairs(self.location_to_sheds[location].keys())                
                 for pair in pairs:
+                
                     
-                    edge_weight = self.location_to_sheds[location][pair[0]] + self.location_to_sheds[location][pair[1]]
+                    edge_weight = int(self.location_to_sheds[location][pair[0]]) + int(self.location_to_sheds[location][pair[1]])
                     
                     if pair not in edge_map:
                         pair = pair[::-1]
@@ -63,6 +63,7 @@ class WatershedMap(object):
                         
                     else:
                         edge_map[pair] = edge_weight
+        print("edges: " + str(len(edge_map)))
         return edge_map
     
     def are_identical_watersheds(self, sub, super):
@@ -96,9 +97,10 @@ class WatershedMap(object):
         return watersheds
         
         
-        
-    def get_watershed_picture(self, dimX, dimY):
+    def get_watershed_picture(self, edge_tree, dimX, dimY):
         pic = numpy.ndarray(shape=(dimX, dimY,3), dtype='uint8', order='F')
+        
+        self.edge_merges(edge_tree, dimX, dimY)
         
         
         for x in range(0,dimX):
@@ -113,7 +115,26 @@ class WatershedMap(object):
                     pic[x][y][2] = 255
         return pic
         
-        
+
+
+    def edge_merges(self, edge_tree,dimX, dimY):
+        for x in range(0, dimX):
+            for y in range(0, dimY):
+                watersheds = self.location_to_sheds[(x,y)]
+                to_be_removed = []
+                to_be_added = []
+                for ws in watersheds:
+                    if ws in edge_tree:
+                        orig_val = watersheds[ws]
+                        to_be_removed.append(ws)
+                        
+                        to_be_added.append((edge_tree[ws].get_root().value, orig_val))
+                for shed in to_be_removed:
+                    watersheds.pop(shed)
+                for shed in to_be_added:
+                    watersheds[shed[0]] = shed[1]
+                
+                
     
 '''
 Gives all the possible pairs of elements of a list.
@@ -123,7 +144,7 @@ def get_all_possible_pairs(vals):
     pairs = []
     
     for i in range(0, len(vals)):
-        for j in range(i, len(vals)):
+        for j in range(i+1, len(vals)):
             pairs.append((vals[i],vals[j]))
     return pairs
     
