@@ -12,6 +12,12 @@ def get_array(filename):
     
     return original_array
 
+def inverse(array):
+    for x in range(0, len(array)):
+        for y in range(0,len(array[0])):
+            array[x][y] = 255 - array[x][y]
+    return array
+
 
 def color_to_grey(array):
     dimensions = array.shape

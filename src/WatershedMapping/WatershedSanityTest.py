@@ -19,7 +19,7 @@ def run(filepath,filename, gradient, step, merge_limit):
         ws = ws_map.build_index_map(utils.get_gradient(grey_array))
         gradstring = "-gradient-"
     else:
-        ws = ws_map.build_index_map(grey_array)
+        ws = ws_map.build_index_map(utils.inverse(grey_array))
     
     edge_merges = dict()
     s = 0
@@ -32,11 +32,11 @@ def run(filepath,filename, gradient, step, merge_limit):
 
 if __name__ == '__main__':
     
-    path = "../../data/cells/"
+    path = "../../data/"
     
     
     did_not_do = "Giant_squid_west_coast.png",
-    wwii = ["ocean-bacteria.png"]
+    wwii = ["lung-healthy.png"]
     
     for name in wwii:
         gradient = False
