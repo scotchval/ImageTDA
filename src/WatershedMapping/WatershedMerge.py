@@ -14,25 +14,22 @@ persistence diagram
 note that this does not take into account changes in edge weights
 
 '''
-def merge_watersheds_at_limit(watersheds, limit):
+def merge_watersheds_at_limit(edge_merges, watersheds, limit):
     
     edge_map = watersheds.get_edge_weight_map()
     
     edge_weights = sorted(edge_map.keys(), key = lambda t: edge_map[t])
     
+    if len(edge_weights) == 0:
+        return
     current = edge_weights.pop(0)
-    
-    edge_merges = dict()
     
     merges = 0
     
-    while edge_map[current] <= limit:
+    while edge_map[current] <= limit and len(edge_weights) > 0:
         merges +=1
         merge_watershed(edge_merges, current[0], current[1])
-        current = edge_weights.pop(0)
-
-        
-        
+        current = edge_weights.pop(0)    
     print("merges: " + str(len(edge_merges)))
     return edge_merges
 

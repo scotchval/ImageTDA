@@ -9,7 +9,7 @@ import src.WatershedMapping.watershed_mapping as ws_map
 import src.WatershedMapping.WatershedMerge as WatershedMerge
 
 
-def run(filepath,filename, gradient, merge_limit):
+def run(filepath,filename, gradient, step, merge_limit):
     grey_array = utils.greyscale(utils.get_array(filepath+filename))
     
     print("size: " + str(len(grey_array)) + " X " + str(len(grey_array[0])) + " (pixels: " + str(len(grey_array) * len(grey_array[0])) + ")")
@@ -21,19 +21,28 @@ def run(filepath,filename, gradient, merge_limit):
     else:
         ws = ws_map.build_index_map(grey_array)
     
-    edge_merges = WatershedMerge.merge_watersheds_at_limit(ws, merge_limit)
-
-    utils.write_image(ws.get_watershed_picture(edge_merges,len(grey_array), len(grey_array[0])), filepath +filename[:-4]+ gradstring + str(merge_limit) + filename[-4:])
-
+    edge_merges = dict()
+    s = 0
+    while s < merge_limit:
+        edge_merges = WatershedMerge.merge_watersheds_at_limit(edge_merges, ws, s)
+        utils.write_image(ws.get_watershed_picture(edge_merges,len(grey_array), len(grey_array[0])), filepath +filename[:-4]+ gradstring + str(s) + filename[-4:])
+        s += step
 
 
 
 if __name__ == '__main__':
     
-    path = "../../data/"
-    name = "farm.PNG"
+    path = "../../data/cells/"
     
-    gradient = True
-    merge_limit=50
     
-    run(path,name, gradient, merge_limit)
+    did_not_do = "Giant_squid_west_coast.png",
+    wwii = ["ocean-bacteria.png"]
+    
+    for name in wwii:
+        gradient = False
+        merge_limit = 255
+        step = 1
+        run(path,name, gradient, step, merge_limit)
+        
+        
+        

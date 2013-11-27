@@ -52,7 +52,7 @@ class WatershedMap(object):
                 for pair in pairs:
                 
                     
-                    edge_weight = int(self.location_to_sheds[location][pair[0]]) + int(self.location_to_sheds[location][pair[1]])
+                    edge_weight = int(self.location_to_sheds[location][pair[0]])+ int(self.location_to_sheds[location][pair[1]])
                     
                     if pair not in edge_map:
                         pair = pair[::-1]

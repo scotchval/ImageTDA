@@ -4,7 +4,7 @@ Created on Nov 22, 2013
 @author: Scott
 '''
 
-import numpy, Image
+import numpy, Image, math
 
 def get_array(filename):
     im = Image.open(filename)
@@ -83,7 +83,7 @@ def gradient_at_point(x, y, array):
     if not in_bounds(x, dy2, array):
         dy2 = y
     
-    gradient_y = (int(array[x][dy1])- int(array[x][dy2]))**2
+    gradient_y = math.sqrt((int(array[x][dy1]))**2+ (int(array[x][dy2]))**2)
     
     
     
