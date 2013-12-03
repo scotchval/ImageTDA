@@ -8,7 +8,7 @@ Created on Nov 9, 2013
 '''
 
 
-import src.WatershedMapping.WatershedMap as WatershedMap
+import WatershedMapping.WatershedMap as WatershedMap
 
 '''
 
