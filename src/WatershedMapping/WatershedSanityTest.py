@@ -8,6 +8,7 @@ import utils.Utils as utils
 import utils.Filters as Filters
 import WatershedMapping.watershed_mapping as ws_map
 import WatershedMapping.WatershedMerge as WatershedMerge
+import WatershedMapping.FileWriter as FileWriter
 
 
 def run(filepath,filename, gradient, step, merge_limit):
@@ -31,6 +32,13 @@ def run(filepath,filename, gradient, step, merge_limit):
         gradstring = "-reverse-"
     
     edge_merges = dict()
+    
+    #FileWriter.writeSparseMatrix(ws, filepath +filename[:-4] + '.data');
+    
+    #FileWriter.readTest(filepath +filename[:-4] + '.data')
+    
+    
+    
     s = 0
     while s < merge_limit:
         edge_merges = WatershedMerge.merge_watersheds_at_limit(edge_merges, ws, s)
@@ -45,7 +53,7 @@ if __name__ == '__main__':
     
     
     did_not_do = "Giant_squid_west_coast.png",
-    wwii = ["class_notes.png"]
+    wwii = ["lost-coast.png"]
     
     for name in wwii:
         gradient = False
