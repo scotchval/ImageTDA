@@ -34,3 +34,9 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+data/*
+data_b/*
+data_f/*
+data_last/*
+

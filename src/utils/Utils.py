@@ -2,6 +2,9 @@
 Created on Nov 22, 2013
 
 @author: Scott
+
+Various utilities used for getting the write data from an image to something that can be calculated on.
+
 '''
 
 import numpy, Image, math

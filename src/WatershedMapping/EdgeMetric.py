@@ -2,15 +2,14 @@
 Created on Nov 24, 2013
 
 @author: Scott
+
+
+Metrics to measure the "distance" between adjacent watersheds
+
 '''
 
-def height_of_smaller(location_to_sheds, p1, p2, ws1, ws2):
-    
-    
-    return 0
+def minimum(d1,d2):
+    return min(d1,d2)
 
-def height_of_both(location_to_sheds, p1, p2, ws1, ws2):
-    
-    
-    
-    return 0
+def summation(d1,d2):
+    return d1 + d2

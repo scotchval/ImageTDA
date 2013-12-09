@@ -2,9 +2,13 @@
 Created on Nov 18, 2013
 
 @author: Scott
+
+
+Used for resizing images. Simplistic. Only resizes to a constant factor.
+
 '''
 import numpy
-import src.utils.Utils as utils
+import utils.Utils as utils
 
 
 

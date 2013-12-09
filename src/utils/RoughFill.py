@@ -2,6 +2,10 @@
 Created on Dec 2, 2013
 
 @author: Scott
+
+
+Does a simplistic job of filling in high density areas of a Black/White (binary) image
+
 '''
 import utils.Utils as util
 

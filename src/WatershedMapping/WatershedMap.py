@@ -8,7 +8,8 @@ import numpy
 
 class WatershedMap(object):
     '''
-    classdocs
+    Maps the locations of all watersheds in an image. Provides a quick (relative)
+    way to map out watersheds and access the calculate data.
     '''
 
 
@@ -38,21 +39,22 @@ class WatershedMap(object):
     def watershed_count(self):
         return len(self.shed_to_location)
             
-    def get_edge_weight_map(self):
+            
+    '''
+    Builds a map of adjacent watersheds and the "distance" (calculated by the metric) between them
+    '''
+    def get_edge_weight_map(self, metric):
         
         # map of edges (pair of watersheds) to the weight of the edge
         edge_map = dict()
-        
-        edges = 0
         
         for location in self.location_to_sheds:
             # this is the condition for an edge.
             if len(self.location_to_sheds[location]) > 1:
                 pairs = get_all_possible_pairs(self.location_to_sheds[location].keys())                
                 for pair in pairs:
-                
                     
-                    edge_weight = int(self.location_to_sheds[location][pair[0]])+ int(self.location_to_sheds[location][pair[1]])
+                    edge_weight = metric(self.location_to_sheds[location][pair[0]], self.location_to_sheds[location][pair[1]])
                     
                     if pair not in edge_map:
                         pair = pair[::-1]
@@ -66,20 +68,16 @@ class WatershedMap(object):
         print("edges: " + str(len(edge_map)))
         return edge_map
     
-    def are_identical_watersheds(self, sub, super):
-        
-        
-        if sub not in self.location_to_sheds or super not in self.location_to_sheds:
+    def are_identical_watersheds(self, subshed, supershed):
+
+        if subshed not in self.location_to_sheds or supershed not in self.location_to_sheds:
             return False
         
-        
-        if len(self.location_to_sheds[sub]) == 0 or len(self.location_to_sheds[super]) ==0:
+        if len(self.location_to_sheds[subshed]) == 0 or len(self.location_to_sheds[supershed]) ==0:
             return False
 
-        keys1 = self.location_to_sheds[sub].keys()
-        keys2 = self.location_to_sheds[super].keys()
-        
-        
+        keys1 = self.location_to_sheds[subshed].keys()
+        keys2 = self.location_to_sheds[supershed].keys()
         
         for shed in keys1:
             if shed not in keys2:
@@ -96,7 +94,11 @@ class WatershedMap(object):
             watersheds.update(ws[0])
         return watersheds
         
-        
+    
+    '''
+    Builds an image of all the watershed by marking watershed intersection with black
+    and everything else with white.
+    '''
     def get_watershed_picture(self, edge_tree, dimX, dimY):
         pic = numpy.ndarray(shape=(dimX, dimY,3), dtype='uint8', order='F')
         
@@ -116,7 +118,7 @@ class WatershedMap(object):
         return pic
         
 
-
+    
     def edge_merges(self, edge_tree,dimX, dimY):
         for x in range(0, dimX):
             for y in range(0, dimY):

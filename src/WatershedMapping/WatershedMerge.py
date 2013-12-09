@@ -13,10 +13,12 @@ persistence diagram
 
 note that this does not take into account changes in edge weights
 
+Generally uses Union-Find algorithm
+
 '''
-def merge_watersheds_at_limit(edge_merges, watersheds, limit):
+def merge_watersheds_at_limit(edge_merges, watersheds, limit, edge_map):
     
-    edge_map = watersheds.get_edge_weight_map()
+    #edge_map = watersheds.get_edge_weight_map()
     
     edge_weights = sorted(edge_map.keys(), key = lambda t: edge_map[t])
     
@@ -74,7 +76,6 @@ class Node(object):
         if isinstance(other, self.__class__):
             return other.value == self.value
         return False
-        
     
     def get_root(self):
         res = self.parent
